@@ -1,13 +1,13 @@
 import java.util.List;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Timer; // For timed quiz mode only (QuizMode.TIMED)
+import java.util.TimerTask; // For timed quiz mode only (QuizMode.TIMED)
 
 class Quiz {
-    private final List<Question> questions;
-    private int score;
-    private int currentQuestionIndex;
-    private final QuizMode quizMode;
+    private final List<Question> questions; // List of questions
+    private int score; // Number of correct answers
+    private int currentQuestionIndex; // Index of the current question in the list
+    private final QuizMode quizMode; // Quiz mode (NORMAL, RANDOM, or TIMED)
 
     public Quiz(List<Question> questions, QuizMode quizMode) {
         this.questions = questions;
@@ -17,11 +17,38 @@ class Quiz {
     }
 
     public void start() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner userInput = new Scanner(System.in);
+
+        System.out.println("Welcome to the Quiz-based Game!");
+        System.out.println("You will be asked " + questions.size() + " questions.");
+        System.out.println("Press Enter to continue.");
+        userInput.nextLine(); // Wait for user to press Enter
+        System.out.println();
+
+        // Display quiz mode (NORMAL, RANDOM, or TIMED)
+        System.out.println("Quiz mode: " + quizMode);
+        System.out.println();
+
+        // Display instructions based on quiz mode
+        if (quizMode == QuizMode.NORMAL) {
+            System.out.println("Questions will be asked in order.");
+            System.out.println("Press Enter to continue.");
+            userInput.nextLine(); // Wait for user to press Enter
+            System.out.println();
+        }
 
         if (quizMode == QuizMode.TIMED) {
-            System.out.println("You have 30 seconds for each question.");
+            System.out.println("You have 3 seconds for each question.");
         }
+
+        if (quizMode == QuizMode.RANDOM) {
+            System.out.println("Questions will be asked in random order.");
+            System.out.println("Press Enter to continue.");
+            userInput.nextLine(); // Wait for user to press Enter
+            System.out.println();
+        }
+
+        nextQuestion(); // Ask the first question
 
         while (currentQuestionIndex < questions.size()) {
             Question currentQuestion = questions.get(currentQuestionIndex);
@@ -32,15 +59,15 @@ class Quiz {
                 TimerTask task = new TimerTask() {
                     public void run() {
                         System.out.println("\nTime's up!");
-                        scanner.nextLine(); // Consume any remaining input
+                        userInput.nextLine(); // Consume any remaining input
                         timer.cancel();
                         nextQuestion();
                     }
                 };
-                timer.schedule(task, 30000); // 30 seconds
+                timer.schedule(task, 3000); // 3 seconds
             }
 
-            int userAnswer = getUserAnswer(scanner);
+            int userAnswer = getUserAnswer(userInput);
 
             if (userAnswer == currentQuestion.correctOption()) {
                 System.out.println("Correct!\n");
