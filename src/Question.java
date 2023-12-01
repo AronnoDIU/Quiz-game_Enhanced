@@ -17,6 +17,12 @@ record Question(String questionText, List<String> options, int correctOption, St
     public String hint() {
         return hint;
     }
+
+    // If you want to override the toString() method:
+    // @Override
+    // public String toString() {
+    //     return questionText + "\n" + options + "\n" + correctOption + "\n" + hint;
+    // }
 }
 
 // OR, if you prefer to use a class instead of a record:

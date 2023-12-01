@@ -107,6 +107,7 @@ public class QuizGame {
         System.out.println("3. Timed");
         System.out.print("Enter your choice: ");
         int choice = userInput.nextInt();
+
         QuizMode quizMode = switch (choice) { // Switch expression to choose quiz mode
             case 1 -> QuizMode.NORMAL; // If choice is 1, return QuizMode.NORMAL
             case 2 -> QuizMode.RANDOM; // If choice is 2, return QuizMode.RANDOM

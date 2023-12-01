@@ -8,6 +8,7 @@ class Quiz {
     private int score; // Number of questions answered correctly
     private int currentQuestionIndex; // Index of the current question
     private final QuizMode quizMode; // Quiz mode (NORMAL, RANDOM, or TIMED)
+    private boolean hasTimedOut; // New field to track whether the timer has expired
 
     public Quiz(List<Question> questions, QuizMode quizMode) {
         this.questions = questions;
@@ -48,40 +49,56 @@ class Quiz {
             System.out.println();
         }
 
-        nextQuestion();
+        nextQuestion(); // Display the first question (and options) to the user
 
+        // Ask questions until the user has answered all of them
         while (currentQuestionIndex < questions.size()) {
             Question currentQuestion = questions.get(currentQuestionIndex);
-            displayQuestion(currentQuestion);
+            displayQuestion(currentQuestion); // Display the current question and options
 
-            if (quizMode == QuizMode.TIMED) {
-                Timer timer = new Timer();
+            // If quiz mode is TIMED, start a timer for 30 seconds
+            if (quizMode == QuizMode.TIMED && !hasTimedOut) {
+                Timer timer = new Timer(); // Create a new timer
+
+                // Create a new timer task that runs after 30 seconds
                 TimerTask task = new TimerTask() {
+
+                    // This method will be called after 30 seconds have elapsed (the timer has expired)
                     public void run() {
-                        System.out.println("\nTime's up!");
-                        displayCorrectAnswer(currentQuestion);
-                        timer.cancel();
-                        nextQuestion();
+                        if (!hasTimedOut) { // Check if the timer has expired
+                            System.out.println("\nTime's up!");
+                            displayCorrectAnswer(currentQuestion); // Display the correct answer
+                            hasTimedOut = true; // Set-hasTimedOut to true
+                            timer.cancel(); // Cancel the timer
+                            nextQuestion(); // Go to the next question
+                        }
                     }
                 };
+                // Start the timer (the timer task will run after 30 seconds)
                 timer.schedule(task, 30000); // 30000 milliseconds = 30 seconds
             }
 
-            int userAnswer = getUserAnswer(userInput);
+            int userAnswer = getUserAnswer(userInput); // Get the user's answer
 
-            if (userAnswer == currentQuestion.correctOption()) {
-                System.out.println("Correct!\n");
-                score++;
-            } else {
-                System.out.println("Incorrect.");
-                displayCorrectAnswer(currentQuestion);
+            // If quiz mode is TIMED and the timer has not expired, cancel the timer
+            if (!hasTimedOut) {
+                // Check if the user's answer is correct
+                if (userAnswer == currentQuestion.correctOption()) {
+                    System.out.println("Correct!\n");
+                    score++; // Increment score by 1
+                } else {
+                    System.out.println("Incorrect.");
+                    displayCorrectAnswer(currentQuestion);
+                }
             }
 
-            nextQuestion();
+            nextQuestion(); // Go to the next question
         }
 
-        System.out.println("Quiz completed! Your final score: " + score + " out of " + questions.size());
+        System.out.println("Quiz completed! Your final score: "
+                + score + " out of " + questions.size());
     }
+
 
     private void nextQuestion() { // Go to the next question
         currentQuestionIndex++; // Increment current question index by 1
@@ -109,8 +126,10 @@ class Quiz {
     private void displayQuestion(Question question) {
         System.out.println(question.questionText());
 
-        // Display the options to the user (numbered from 1 to n) and get their answer
+        // Get the list of options for the current question
         List<String> options = question.options();
+
+        // Display the options to the user (numbered from 1 to n) and get their answer
         for (int i = 0; i < options.size(); i++) {
             System.out.println((i + 1) + ". " + options.get(i));
         }
@@ -126,11 +145,12 @@ class Quiz {
         while (userAnswer < 1 || userAnswer > questions.get(0).options().size()) {
             System.out.println("Choose an option between 1 and " + questions.get(0).options().size());
             try {
+                // Get the user's answer (must be a number between 1 and n)
                 userAnswer = Integer.parseInt(userInput.nextLine());
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e) { // If the user enters a non-numeric value
                 System.out.println("Invalid input. Please enter a number.");
             }
         }
-        return userAnswer;
+        return userAnswer; // Return the user's answer
     }
 }
