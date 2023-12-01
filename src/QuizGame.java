@@ -107,15 +107,15 @@ public class QuizGame {
         System.out.println("3. Timed");
         System.out.print("Enter your choice: ");
         int choice = userInput.nextInt();
-        QuizMode quizMode = switch (choice) {
-            case 1 -> QuizMode.NORMAL;
-            case 2 -> QuizMode.RANDOM;
-            case 3 -> QuizMode.TIMED;
+        QuizMode quizMode = switch (choice) { // Switch expression to choose quiz mode
+            case 1 -> QuizMode.NORMAL; // If choice is 1, return QuizMode.NORMAL
+            case 2 -> QuizMode.RANDOM; // If choice is 2, return QuizMode.RANDOM
+            case 3 -> QuizMode.TIMED; // If choice is 3, return QuizMode.TIMED
             default -> {
                 System.out.println("Invalid choice. Defaulting to normal mode.");
-                yield QuizMode.NORMAL;
+                yield QuizMode.NORMAL; // If choice is not 1, 2, or 3, return QuizMode.NORMAL
             }
-        };
+        }; // End of switch expression
 
         Quiz quiz = new Quiz(questions, quizMode);
         quiz.start(); // Start the quiz
