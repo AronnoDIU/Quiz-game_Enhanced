@@ -17,6 +17,7 @@ the file.
     - [Features](#features)
     - [How to Run](#how-to-run)
     - [Code Structure](#code-structure)
+    - [Usage](#usage)
     - [Contributing](#contributing)
     - [License](#license)
 
@@ -52,6 +53,17 @@ the file.
 - `Quiz.java`: This file contains the `Quiz` class, which handles the logic of the quiz game.
 - `QuizGame.java`: This file contains the `QuizGame` class, which is the entry point of the application.
 - `Question.java`: This file contains the `Question` class, which represents a question.
+
+## Usage
+
+1. Select a quiz mode.
+2. Start the quiz.
+3. Answer the questions.
+4. See your score.
+5. See the high scores.
+6. See the instructions.
+7. See the about page.
+8. Exit the game.
 
 ## Contributing
 
