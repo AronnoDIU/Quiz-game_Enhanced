@@ -42,13 +42,13 @@ class Quiz {
 
             int userAnswer = getUserAnswer(scanner);
 
-            if (userAnswer == currentQuestion.getCorrectOption()) {
+            if (userAnswer == currentQuestion.correctOption()) {
                 System.out.println("Correct!\n");
                 score++;
             } else {
-                System.out.println("Incorrect. The correct answer is: " + currentQuestion.getCorrectOption());
-                if (!currentQuestion.getHint().isEmpty()) {
-                    System.out.println("Hint: " + currentQuestion.getHint());
+                System.out.println("Incorrect. The correct answer is: " + currentQuestion.correctOption());
+                if (!currentQuestion.hint().isEmpty()) {
+                    System.out.println("Hint: " + currentQuestion.hint());
                 }
                 System.out.println();
             }
@@ -66,9 +66,9 @@ class Quiz {
     }
 
     private void displayQuestion(Question question) {
-        System.out.println(question.getQuestionText());
+        System.out.println(question.questionText());
 
-        List<String> options = question.getOptions();
+        List<String> options = question.options();
         for (int i = 0; i < options.size(); i++) {
             System.out.println((i + 1) + ". " + options.get(i));
         }
@@ -78,8 +78,8 @@ class Quiz {
 
     private int getUserAnswer(Scanner userInput) {
         int userAnswer = -1;
-        while (userAnswer < 1 || userAnswer > questions.get(0).getOptions().size()) {
-            System.out.println("Choose an option between 1 and " + questions.get(0).getOptions().size());
+        while (userAnswer < 1 || userAnswer > questions.get(0).options().size()) {
+            System.out.println("Choose an option between 1 and " + questions.get(0).options().size());
             try {
                 userAnswer = Integer.parseInt(userInput.nextLine());
             } catch (NumberFormatException e) {

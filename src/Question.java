@@ -1,31 +1,19 @@
 import java.util.List;
 
-class Question {
-    private final String questionText;
-    private final List<String> options;
-    private final int correctOption;
-    private final String hint;
-
-    public Question(String questionText, List<String> options, int correctOption, String hint) {
-        this.questionText = questionText;
-        this.options = options;
-        this.correctOption = correctOption;
-        this.hint = hint;
-    }
-
-    public String getQuestionText() {
+record Question(String questionText, List<String> options, int correctOption, String hint) {
+    public String questionText() {
         return questionText;
     }
 
-    public List<String> getOptions() {
+    public List<String> options() {
         return options;
     }
 
-    public int getCorrectOption() {
+    public int correctOption() {
         return correctOption;
     }
 
-    public String getHint() {
+    public String hint() {
         return hint;
     }
 }
