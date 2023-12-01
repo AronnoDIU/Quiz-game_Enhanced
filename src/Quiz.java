@@ -4,9 +4,9 @@ import java.util.Timer; // For timed quiz mode only (QuizMode.TIMED)
 import java.util.TimerTask; // For timed quiz mode only (QuizMode.TIMED)
 
 class Quiz {
-    private final List<Question> questions; // List of questions
-    private int score; // Number of correct answers
-    private int currentQuestionIndex; // Index of the current question in the list
+    private final List<Question> questions; // List of questions to ask the user
+    private int score; // Number of questions answered correctly
+    private int currentQuestionIndex; // Index of the current question
     private final QuizMode quizMode; // Quiz mode (NORMAL, RANDOM, or TIMED)
 
     public Quiz(List<Question> questions, QuizMode quizMode) {
@@ -38,7 +38,7 @@ class Quiz {
         }
 
         if (quizMode == QuizMode.TIMED) {
-            System.out.println("You have 3 seconds for each question.");
+            System.out.println("You have 30 seconds for each question.");
         }
 
         if (quizMode == QuizMode.RANDOM) {
@@ -48,7 +48,7 @@ class Quiz {
             System.out.println();
         }
 
-        nextQuestion(); // Ask the first question
+        nextQuestion();
 
         while (currentQuestionIndex < questions.size()) {
             Question currentQuestion = questions.get(currentQuestionIndex);
@@ -59,12 +59,12 @@ class Quiz {
                 TimerTask task = new TimerTask() {
                     public void run() {
                         System.out.println("\nTime's up!");
-                        userInput.nextLine(); // Consume any remaining input
+                        // Removed nextLine()
                         timer.cancel();
                         nextQuestion();
                     }
                 };
-                timer.schedule(task, 3000); // 3 seconds
+                timer.schedule(task, 30000); // 30000 milliseconds = 30 seconds
             }
 
             int userAnswer = getUserAnswer(userInput);
@@ -79,6 +79,8 @@ class Quiz {
                 }
                 System.out.println();
             }
+            // Now nextQuestion is always called
+//            nextQuestion();
 
             if (quizMode != QuizMode.TIMED) {
                 nextQuestion();
